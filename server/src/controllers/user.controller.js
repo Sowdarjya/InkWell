@@ -89,7 +89,17 @@ export const login = async (req, res) => {
       profileImg: user.profileImg,
     });
   } catch (error) {
-    console.log("Error logging is user", error.message);
+    console.log("Error logging in user", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("jwt");
+    return res.status(200).json({ message: "logged out successfully" });
+  } catch (error) {
+    console.log("Error logging out user", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
