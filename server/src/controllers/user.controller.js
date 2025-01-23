@@ -1,13 +1,19 @@
 import { User } from "../models/user.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import bcrypt from "bcryptjs";
+import { generateToken } from "../utils/utils.js";
 
 export const signup = async (req, res) => {
+  const { fullname, email, username, password, profileImg } = req.body;
   try {
-    const { fullname, email, username, password, profileImg } = req.body;
-
     if (!fullname || !email || !username || !password || !profileImg) {
       return res.status(400).json({ message: "All fields are mandatory" });
+    }
+
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
     }
 
     const user = await User.findOne({
@@ -47,6 +53,43 @@ export const signup = async (req, res) => {
     }
   } catch (error) {
     console.log("Error signing up user", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const login = async (req, res) => {
+  const { email, username, password } = req.body;
+  try {
+    if (!email || !username || !password) {
+      return res.status(400).json({ message: "All fields are mandatory" });
+    }
+
+    const user = await User.findOne({
+      $and: [{ email }, { username }],
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isPasswordCorrect = bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    generateToken(user._id, res);
+
+    return res.status(201).json({
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      username: user.username,
+      password: user.password,
+      profileImg: user.profileImg,
+    });
+  } catch (error) {
+    console.log("Error logging is user", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
