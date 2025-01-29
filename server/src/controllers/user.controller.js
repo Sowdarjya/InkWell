@@ -4,9 +4,9 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/utils.js";
 
 export const signup = async (req, res) => {
-  const { fullname, email, username, password, profileImg } = req.body;
+  const { fullname, email, username, password } = req.body;
   try {
-    if (!fullname || !email || !username || !password || !profileImg) {
+    if (!fullname || !email || !username || !password) {
       return res.status(400).json({ message: "All fields are mandatory" });
     }
 
@@ -27,15 +27,11 @@ export const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const uploadResponse = await cloudinary.uploader.upload(profileImg);
-    const imageUrl = uploadResponse.secure_url;
-
     const newUser = new User({
       fullname,
       email,
       username,
       password: hashedPassword,
-      profileImg: imageUrl,
     });
 
     if (newUser) {
@@ -46,7 +42,6 @@ export const signup = async (req, res) => {
         email: newUser.email,
         username: newUser.username,
         password: newUser.password,
-        profileImg: newUser.profileImg,
       });
     } else {
       res.status(401).json({ message: "Invalid user data" });
@@ -72,7 +67,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const isPasswordCorrect = bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
