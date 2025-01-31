@@ -22,9 +22,9 @@ const userSlice = createSlice({
       state.isError = false;
     },
 
-    signInFailure: (state) => {
+    signInFailure: (state, action) => {
       state.isLoading = false;
-      state.isError = true;
+      state.isError = action.payload;
     },
   },
 });

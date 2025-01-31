@@ -32,12 +32,15 @@ const SignUp = () => {
   const validateForm = () => {
     if (!fullname || !email || !username || !password || !confirmPassword) {
       toast.error("All fields are mandatory");
+      dispatch(signInFailure("All fields are mandatory"));
       return false;
     } else if (password !== confirmPassword) {
       toast.error("Passwords must be same");
+      dispatch(signInFailure("Passwords must be same"));
       return false;
     } else if (password.length < 6) {
       toast.error("Password must contain atleast 6 characters");
+      dispatch(signInFailure("Password must contain atleast 6 characters"));
       return false;
     } else {
       return true;
@@ -57,16 +60,8 @@ const SignUp = () => {
         password,
       });
 
-      console.log(data);
-
-      toast.success("Account created successfully");
-
-      if (!data) {
-        dispatch(signInFailure());
-        return;
-      }
-
       localStorage.setItem("userInfo", JSON.stringify(data));
+      toast.success("Account created successfully");
 
       setFormData({
         fullname: "",
@@ -79,8 +74,10 @@ const SignUp = () => {
       dispatch(signInSuccess(data));
       navigate("/signin");
     } catch (error) {
-      toast.error(error.response?.data?.message || "error creating account");
-      dispatch(signInFailure());
+      const errorMsg =
+        error.response?.data?.message || "error creating account";
+      toast.error(errorMsg);
+      dispatch(signInFailure(errorMsg));
     }
   };
 
@@ -90,6 +87,9 @@ const SignUp = () => {
         <div className="flex items-center justify-center gap-3 text-4xl font-semibold text-[#333333] dark:text-[#E0E0E0]">
           <ContactRound size={45} /> Register
         </div>
+        {isError && (
+          <p className="text-center text-xl text-red-600 mt-2">{isError}</p>
+        )}
         <div className="my-4">
           <p className="text-[#333333] dark:text-[#E0E0E0]">Full name</p>
           <input
