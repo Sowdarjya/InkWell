@@ -1,8 +1,11 @@
-import { ContactRound } from "lucide-react";
+import { ContactRound, Star } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../services/axios.instance";
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +15,10 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLoading, isError } = useSelector((state) => state.user);
 
   const { fullname, email, username, password, confirmPassword } = formData;
 
@@ -27,7 +34,7 @@ const SignUp = () => {
       toast.error("All fields are mandatory");
       return false;
     } else if (password !== confirmPassword) {
-      toast.error("Password and confirm password must be same");
+      toast.error("Passwords must be same");
       return false;
     } else if (password.length < 6) {
       toast.error("Password must contain atleast 6 characters");
@@ -40,17 +47,26 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
+    dispatch(signInStart());
     try {
-      const response = await api.post("/users/signup", {
+      const { data } = await api.post("/users/signup", {
         fullname,
         email,
         username,
         password,
       });
 
-      console.log(response);
+      console.log(data);
 
       toast.success("Account created successfully");
+
+      if (!data) {
+        dispatch(signInFailure());
+        return;
+      }
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
 
       setFormData({
         fullname: "",
@@ -59,8 +75,12 @@ const SignUp = () => {
         password: "",
         confirmPassword: "",
       });
+
+      dispatch(signInSuccess(data));
+      navigate("/signin");
     } catch (error) {
       toast.error(error.response?.data?.message || "error creating account");
+      dispatch(signInFailure());
     }
   };
 
@@ -106,7 +126,7 @@ const SignUp = () => {
         <div className="my-4">
           <p className="text-[#333333] dark:text-[#E0E0E0]">Password</p>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             name="password"
             value={password}
@@ -117,7 +137,7 @@ const SignUp = () => {
         <div className="my-4">
           <p className="text-[#333333] dark:text-[#E0E0E0]">Confirm Password</p>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Confirm Password"
             name="confirmPassword"
             value={confirmPassword}
@@ -126,13 +146,25 @@ const SignUp = () => {
           />
         </div>
 
+        <p className="text-[#333333] dark:text-[#E0E0E0]">
+          Show password
+          <input
+            type="checkbox"
+            value={showPassword}
+            onChange={() => {
+              setShowPassword(!showPassword);
+            }}
+            className="mx-2"
+          />
+        </p>
+
         <div className="flex justify-center my-3">
           <button
             type="submit"
             className="dark:bg-slate-500 bg-gray-400 p-2 rounded-md text-[#333333] dark:text-[#E0E0E0] w-4/5"
             onClick={handleSubmit}
           >
-            Create Account
+            {isLoading ? "Loading" : "Create account"}
           </button>
         </div>
         <p className="text-center text-[#333333] dark:text-[#E0E0E0]">

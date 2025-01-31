@@ -18,19 +18,6 @@ const Navbar = () => {
     document.documentElement.classList.toggle("dark", newMode);
   };
 
-  const navItems = [
-    {
-      id: 1,
-      name: "Login",
-      slug: "/signin",
-    },
-    {
-      id: 2,
-      name: "Register",
-      slug: "/signup",
-    },
-  ];
-
   return (
     <nav className="bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,19 +31,32 @@ const Navbar = () => {
             </NavLink>
           </div>
           <div className="w-1/4 flex items-center justify-around">
-            {navItems.map((item) => (
-              <NavLink
-                to={item.slug}
-                key={item.id}
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-xl light:text-gray-700 dark:text-white underline dark:decoration-white light:decoration-gray-700 font-semibold"
-                    : "text-xl light:text-gray-700 dark:text-white"
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
+            <button
+              className="
+                rounded-lg 
+                px-4 
+                py-2 
+                text-lg 
+                font-medium 
+                transition-all 
+                duration-300 
+                ease-in-out 
+                border 
+                border-transparent
+                bg-gray-200 
+                text-gray-800 
+                hover:bg-gray-300 
+                dark:bg-gray-700 
+                dark:text-gray-200 
+                dark:hover:bg-gray-600
+                focus:outline-none 
+                focus:ring-2 
+                focus:ring-offset-2 
+                focus:ring-gray-500
+              "
+            >
+              <NavLink to="/signin">Sign in</NavLink>
+            </button>
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
