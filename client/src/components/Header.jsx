@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
     const isDark = localStorage.getItem("darkMode") === "true";
@@ -31,8 +33,9 @@ const Navbar = () => {
             </NavLink>
           </div>
           <div className="w-1/4 flex items-center justify-around">
-            <button
-              className="
+            {userInfo ? (
+              <button
+                className="
                 rounded-lg 
                 px-4 
                 py-2 
@@ -54,9 +57,38 @@ const Navbar = () => {
                 focus:ring-offset-2 
                 focus:ring-gray-500
               "
-            >
-              <NavLink to="/signin">Sign in</NavLink>
-            </button>
+              >
+                <NavLink to={`/profile/${userInfo._id}`}>Profile</NavLink>
+              </button>
+            ) : (
+              <button
+                className="
+                rounded-lg 
+                px-4 
+                py-2 
+                text-lg 
+                font-medium 
+                transition-all 
+                duration-300 
+                ease-in-out 
+                border 
+                border-transparent
+                bg-gray-200 
+                text-gray-800 
+                hover:bg-gray-300 
+                dark:bg-gray-700 
+                dark:text-gray-200 
+                dark:hover:bg-gray-600
+                focus:outline-none 
+                focus:ring-2 
+                focus:ring-offset-2 
+                focus:ring-gray-500
+              "
+              >
+                <NavLink to="/signin">Sign in</NavLink>
+              </button>
+            )}
+
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"

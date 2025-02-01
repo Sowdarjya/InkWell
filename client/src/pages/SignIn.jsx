@@ -46,13 +46,11 @@ const SignIn = () => {
 
     dispatch(signInStart());
     try {
-      const { data } = await api.post("/users/signin", {
+      const { data } = await api.post("/users/login", {
         email,
         username,
         password,
       });
-
-      console.log(data);
 
       dispatch(signInSuccess(data));
       toast.success("Logged in successfully");
@@ -66,7 +64,7 @@ const SignIn = () => {
 
       navigate("/");
     } catch (error) {
-      const errorMsg = error.response?.data?.message;
+      const errorMsg = error.response?.data?.message || "Something went wrong";
       toast.error(errorMsg);
       dispatch(signInFailure(errorMsg));
     }
@@ -78,6 +76,9 @@ const SignIn = () => {
         <div className="flex items-center justify-center gap-3 text-4xl font-semibold text-[#333333] dark:text-[#E0E0E0]">
           <LogIn size={45} /> Login
         </div>
+        {isError && (
+          <p className="text-center text-xl text-red-600 mt-2">{isError}</p>
+        )}
         <div className="my-4">
           <p className="text-[#333333] dark:text-[#E0E0E0]">Email</p>
           <input
@@ -130,7 +131,7 @@ const SignIn = () => {
             className="dark:bg-slate-500 bg-gray-400 p-2 rounded-md text-[#333333] dark:text-[#E0E0E0] w-4/5"
             onClick={handleSubmit}
           >
-            Login
+            {isLoading ? "loading" : "Login"}
           </button>
         </div>
         <p className="text-center text-[#333333] dark:text-[#E0E0E0]">
