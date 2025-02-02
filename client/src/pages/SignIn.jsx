@@ -1,5 +1,5 @@
 import { LogIn } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const SignIn = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const { isLoading, isError } = useSelector((state) => state.user);
+  const { userInfo, isLoading, isError } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,6 +23,10 @@ const SignIn = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    if (userInfo) navigate("/");
+  });
 
   const { email, username, password } = formData;
 
@@ -54,7 +58,7 @@ const SignIn = () => {
 
       dispatch(signInSuccess(data));
       toast.success("Logged in successfully");
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      sessionStorage.setItem("userInfo", JSON.stringify(data));
 
       setFormData({
         email: "",

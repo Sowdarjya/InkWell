@@ -6,6 +6,7 @@ import api from "../services/axios.instance";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +19,11 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading, isError } = useSelector((state) => state.user);
+  const { userInfo, isLoading, isError } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (userInfo) navigate("/");
+  });
 
   const { fullname, email, username, password, confirmPassword } = formData;
 
@@ -60,7 +65,7 @@ const SignUp = () => {
         password,
       });
 
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      sessionStorage.setItem("userInfo", JSON.stringify(data));
       toast.success("Account created successfully");
 
       setFormData({
