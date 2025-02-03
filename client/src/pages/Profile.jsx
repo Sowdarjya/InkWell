@@ -1,10 +1,12 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import UserDetails from "../components/UserDetails";
 
 const Profile = () => {
-  const { id } = useParams();
-
-  return <div>{id}</div>;
+  return (
+    <div className="min-h-screen flex items-center">
+      <UserDetails />
+    </div>
+  );
 };
 
 export default Profile;

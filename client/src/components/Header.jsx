@@ -35,18 +35,21 @@ const Navbar = () => {
           </div>
           <div className="w-1/4 flex items-center justify-center gap-8">
             {userInfo ? (
-              <div className="relative group">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 opacity-75 blur-sm group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative p-1 rounded-full bg-white dark:bg-gray-800 ring-2 ring-violet-500 dark:ring-violet-400 transition-all duration-300 transform group-hover:scale-105">
-                  <NavLink to="/profile">
-                    <img
-                      src={userInfo.profileImg || noUserImg}
-                      alt="profile img"
-                      className="w-10 h-10 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
-                    />
-                  </NavLink>
+              <>
+                {/* <button className="bg-red-500">Create Post</button> */}
+                <div className="relative group">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 opacity-75 blur-sm group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative p-1 rounded-full bg-white dark:bg-gray-800 ring-2 ring-violet-500 dark:ring-violet-400 transition-all duration-300 transform group-hover:scale-105">
+                    <NavLink to="/profile">
+                      <img
+                        src={userInfo.profileImg || noUserImg}
+                        alt="profile img"
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+                      />
+                    </NavLink>
+                  </div>
                 </div>
-              </div>
+              </>
             ) : (
               <button
                 className="
