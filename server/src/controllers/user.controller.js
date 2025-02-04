@@ -102,40 +102,42 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { username, fullname, email } = req.body;
-    const profileImgLocalPath = req.file?.path;
+    const { username, fullname, email, profileImg } = req.body;
 
-    const response = await cloudinary.uploader.upload(profileImgLocalPath, {
-      resource_type: "auto",
-    });
-
-    if (!response.url) {
-      return res.status(400).json({ message: "Error updating profile image" });
+    const user = await User.findById(req.user?._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const user = await User.findByIdAndUpdate(
-      req.user?._id,
+    let imageUrl = user.profileImg;
+
+    if (profileImg && profileImg.startsWith("data:image")) {
+      const response = await cloudinary.uploader.upload(profileImg, {
+        resource_type: "image",
+      });
+
+      if (!response.secure_url) {
+        return res.status(400).json({ message: "Error uploading image" });
+      }
+      imageUrl = response.secure_url;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
       {
         $set: {
           username,
           fullname,
           email,
-          profileImg: response.url,
+          profileImg: imageUrl,
         },
       },
       { new: true }
     ).select("-password");
 
-    return res.status(201).json({
-      _id: user._id,
-      fullname: user.fullname,
-      email: user.email,
-      username: user.username,
-      password: user.password,
-      profileImg: user.profileImg,
-    });
+    return res.status(200).json(updatedUser);
   } catch (error) {
-    console.log("Error updating user", error.message);
+    console.error("Error updating user profile:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

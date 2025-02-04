@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { X, Camera, Upload } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import noUserImg from "../assets/noUserImg.jpeg";
+import { updateFailure, updateStart, updateSuccess } from "../slices/userSlice";
+import api from "../services/axios.instance.js";
+import toast from "react-hot-toast";
 
 const UpdateProfileModal = ({ isOpen, onClose }) => {
   const { userInfo } = useSelector((state) => state.user);
@@ -11,6 +14,7 @@ const UpdateProfileModal = ({ isOpen, onClose }) => {
     email: userInfo?.email,
     profileImg: userInfo?.profileImg || noUserImg,
   });
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,16 +27,34 @@ const UpdateProfileModal = ({ isOpen, onClose }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        profileImg: URL.createObjectURL(file),
-      }));
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setFormData((prev) => ({
+          ...prev,
+          profileImg: reader.result, // Base64 string
+        }));
+      };
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    dispatch(updateStart());
+    try {
+      const { data } = await api.put("/users/update-profile", {
+        username: formData.username,
+        fullname: formData.fullname,
+        email: formData.email,
+        profileImg: formData.profileImg,
+      });
+      dispatch(updateSuccess(data));
+      toast.success("Updated successfully");
+    } catch (error) {
+      const errorMsg = error.message;
+      dispatch(updateFailure(errorMsg));
+      toast.error(errorMsg);
+    }
     onClose();
   };
 
