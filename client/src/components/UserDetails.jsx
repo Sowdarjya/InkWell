@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Camera, FilePen, LogOut, Mail, UserRoundPen } from "lucide-react";
+import { FilePen, LogOut, Mail, UserRoundPen } from "lucide-react";
 import noUserImg from "../assets/noUserImg.jpeg";
 import toast from "react-hot-toast";
 import api from "../services/axios.instance";
 import { logOutSuccess, logOutStart, logOutFailure } from "../slices/userSlice";
+import Modal from "../components/Modal";
 
 const UserDetails = () => {
   const [userData, setUserData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { userInfo, isLoading } = useSelector((state) => state.user);
   const { username } = useParams();
   const navigate = useNavigate();
@@ -64,26 +66,6 @@ const UserDetails = () => {
         {userData?.username}
       </h2>
 
-      {!username && (
-        <div className="flex justify-center mt-4">
-          <button
-            className="
-          flex items-center justify-center gap-2
-          px-6 py-2.5 w-2/3
-          bg-violet-600 hover:bg-violet-700
-          dark:bg-violet-500 dark:hover:bg-violet-600
-          text-white font-medium
-          rounded-lg
-          transition-all duration-200
-          shadow-md hover:shadow-lg
-          hover:-translate-y-0.5"
-          >
-            <span>Update image</span>
-            <Camera className="w-5 h-5" />
-          </button>
-        </div>
-      )}
-
       <div className="space-y-4 py-6 my-6 border-y border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-center gap-3 text-gray-700 dark:text-gray-300">
           <UserRoundPen className="w-5 h-5" />
@@ -110,6 +92,7 @@ const UserDetails = () => {
           transition-all duration-200
           shadow-md hover:shadow-lg
           hover:-translate-y-0.5"
+              onClick={() => setIsModalOpen(!isModalOpen)}
             >
               <span>Update profile</span>
               <FilePen className="w-5 h-5" />
@@ -135,6 +118,9 @@ const UserDetails = () => {
             </button>
           </div>
         </>
+      )}
+      {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       )}
     </div>
   );
