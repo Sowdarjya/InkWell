@@ -16,9 +16,6 @@ const postSchema = new mongoose.Schema(
     },
     coverImg: {
       type: String,
-      required: true,
-      default:
-        "https://cdn2.domestika.org/assets/projects/project-default-cover-1248c9d991d3ef88af5464656840f5534df2ae815032af0fdf39562fee08f0a6.svg",
     },
     upvotes: {
       type: Number,

@@ -154,9 +154,9 @@ export const deleteProfile = async (req, res) => {
 
     await User.findByIdAndDelete(user._id);
 
-    res.status(200).json({ message: "user deleted successfully" });
+    return res.status(200).json({ message: "user deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
     console.error("Error deleting account", error.message);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

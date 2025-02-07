@@ -32,7 +32,7 @@ const UpdateProfileModal = ({ isOpen, onClose }) => {
       reader.onloadend = () => {
         setFormData((prev) => ({
           ...prev,
-          profileImg: reader.result, // Base64 string
+          profileImg: reader.result,
         }));
       };
     }
