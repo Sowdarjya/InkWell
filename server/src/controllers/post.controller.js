@@ -40,6 +40,7 @@ export const createPost = async (req, res) => {
       postedBy: user.username,
       title,
       description,
+      profileImg: user.profileImg || "",
       coverImg: imageUrl || "",
     });
 
@@ -67,5 +68,37 @@ export const getPosts = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const upvotePost = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(400).json({ message: "Log in first to like a post" });
+    }
+
+    const { id: postId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(400).json({ message: "Post not found" });
+    }
+
+    const upvotedByUser = post.upvotes.includes(user._id);
+
+    if (upvotedByUser) {
+      await Post.updateOne({ _id: postId }, { $pull: { upvotes: user._id } });
+      return res.status(200).json({ message: "Removed upvote successfully" });
+    } else {
+      post.upvotes.push(user._id);
+      await post.save();
+      return res.status(200).json({ message: "Upvoted successfully" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: "Internal server error" });
+    console.error(error.message);
   }
 };

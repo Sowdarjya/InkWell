@@ -4,7 +4,7 @@ const postSchema = new mongoose.Schema(
   {
     postedBy: {
       type: String,
-      ref: "User",
+      required: true,
     },
     title: {
       type: String,
@@ -14,12 +14,16 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profileImg: {
+      type: String,
+    },
     coverImg: {
       type: String,
     },
     upvotes: {
-      type: Number,
-      default: 0,
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
   },
   { timestamps: true }
