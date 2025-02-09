@@ -56,6 +56,24 @@ export const createPost = async (req, res) => {
   }
 };
 
+export const getPost = async (req, res) => {
+  try {
+    const { id: postId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(400).json({ message: "Post not found" });
+    }
+
+    return res.status(200).json({ ...post._doc });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export const getPosts = async (req, res) => {
   try {
     const posts = await Post.find();
@@ -98,7 +116,7 @@ export const upvotePost = async (req, res) => {
       return res.status(200).json({ message: "Upvoted successfully" });
     }
   } catch (error) {
-    res.status(400).json({ message: "Internal server error" });
     console.error(error.message);
+    return res.status(400).json({ message: "Internal server error" });
   }
 };
