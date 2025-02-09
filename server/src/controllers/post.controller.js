@@ -37,7 +37,7 @@ export const createPost = async (req, res) => {
     }
 
     const newPost = new Post({
-      postedBy: user._id,
+      postedBy: user.username,
       title,
       description,
       coverImg: imageUrl || "",
@@ -51,6 +51,21 @@ export const createPost = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating post", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getPosts = async (req, res) => {
+  try {
+    const posts = await Post.find();
+
+    if (!posts) {
+      return res.status(400).json({ message: "No posts found" });
+    }
+
+    return res.status(200).json({ ...posts });
+  } catch (error) {
+    console.error(error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
