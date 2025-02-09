@@ -1,9 +1,8 @@
 import { Post } from "../models/post.model.js";
-import { User } from "../models/user.model.js";
 
 export const createPost = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = req.user;
 
     if (!user) {
       return res.status(400).json({ message: "Login first to create a post" });
@@ -91,7 +90,7 @@ export const getPosts = async (req, res) => {
 
 export const upvotePost = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = req.user;
 
     if (!user) {
       return res.status(400).json({ message: "Log in first to like a post" });
@@ -118,5 +117,36 @@ export const upvotePost = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ message: "Internal server error" });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  try {
+    const { id: postId } = req.params;
+
+    const user = req.user;
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Log in first to delete the post" });
+    }
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(400).json({ message: "Post not found" });
+    }
+
+    if (user.username !== post.postedBy) {
+      return res.status(400).json({ message: "You can't delete this post" });
+    }
+
+    await Post.findByIdAndDelete(postId);
+
+    return res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

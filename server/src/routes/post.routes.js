@@ -2,6 +2,7 @@ import { Router } from "express";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 import {
   createPost,
+  deletePost,
   getPost,
   getPosts,
   upvotePost,
@@ -13,5 +14,6 @@ router.get("/get-posts", getPosts);
 router.get("/get-post/:id", getPost);
 router.post("/create", verifyToken, createPost);
 router.put("/upvote-post/:id", verifyToken, upvotePost);
+router.delete("/delete-post/:id", verifyToken, deletePost);
 
 export default router;
