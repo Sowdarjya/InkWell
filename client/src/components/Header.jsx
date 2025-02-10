@@ -40,7 +40,7 @@ const Navbar = () => {
                 <div className="relative group">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 opacity-75 blur-sm group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="relative p-1 rounded-full bg-white dark:bg-gray-800 ring-2 ring-violet-500 dark:ring-violet-400 transition-all duration-300 transform group-hover:scale-105">
-                    <NavLink to="/profile">
+                    <NavLink to={`/profile/${userInfo.username}`}>
                       <img
                         src={userInfo.profileImg || noUserImg}
                         alt="profile img"
