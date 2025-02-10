@@ -5,6 +5,7 @@ import {
   deletePost,
   getPost,
   getPosts,
+  updatePost,
   upvotePost,
 } from "../controllers/post.controller.js";
 
@@ -14,6 +15,7 @@ router.get("/get-posts", getPosts);
 router.get("/get-post/:id", getPost);
 router.post("/create", verifyToken, createPost);
 router.put("/upvote-post/:id", verifyToken, upvotePost);
+router.put("/update-post/:id", verifyToken, updatePost);
 router.delete("/delete-post/:id", verifyToken, deletePost);
 
 export default router;
