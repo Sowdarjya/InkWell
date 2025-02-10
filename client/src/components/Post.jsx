@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Post = ({ post }) => {
   const defaultImage = "https://placehold.co/600x400?text=No+Image";
@@ -27,7 +27,7 @@ const Post = ({ post }) => {
             />
           </div>
           <span className="text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200">
-            {post.postedBy}
+            <Link to={`/profile/${post.postedBy}`}>{post.postedBy}</Link>
           </span>
         </div>
 

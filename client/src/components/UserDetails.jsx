@@ -17,10 +17,24 @@ const UserDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const getUserDetails = async () => {
+    try {
+      const response = await api.get(`/users/get-user/${username}`);
+      console.log(response);
+      setUserData(response.data);
+    } catch (error) {
+      console.error(error.message);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     if (!username) {
       setUserData(userInfo);
+      return;
     }
+
+    getUserDetails();
   }, []);
 
   const handleLogOut = async () => {
@@ -78,7 +92,7 @@ const UserDetails = () => {
         </div>
       </div>
 
-      {!username && (
+      {userInfo.username === username ? (
         <>
           <div className="flex justify-center">
             <button
@@ -117,6 +131,15 @@ const UserDetails = () => {
               <LogOut className="w-5 h-5" />
             </button>
           </div>
+        </>
+      ) : (
+        <>
+          <p className="text-gray-700 dark:text-gray-300 text-center text-lg mb-2">
+            Joined on: {new Date(userData?.createdAt).toLocaleString()}
+          </p>
+          <p className="text-gray-700 dark:text-gray-300 text-center text-lg mb-2">
+            Last updated: {new Date(userData?.updatedAt).toLocaleString()}
+          </p>
         </>
       )}
       {isModalOpen && (
