@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ThumbsUp, Trash2, Edit, ArrowLeft } from "lucide-react";
 import api from "../services/axios.instance";
+import { useSelector } from "react-redux";
 
 const PostDetails = () => {
   const [post, setPost] = useState(null);
@@ -9,9 +10,7 @@ const PostDetails = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState(
-    JSON.parse(sessionStorage.getItem("userInfo"))
-  );
+  const { userInfo } = useSelector((state) => state.user);
 
   const getPostDetails = async () => {
     try {
@@ -28,7 +27,7 @@ const PostDetails = () => {
 
   const handleUpvote = async () => {
     try {
-      if (!user) {
+      if (!userInfo) {
         navigate("/signin");
         return;
       }
@@ -36,9 +35,9 @@ const PostDetails = () => {
       const response = await api.put(`/posts/upvote-post/${id}`);
       const updatedPost = {
         ...post,
-        upvotes: post.upvotes.includes(user._id)
-          ? post.upvotes.filter((id) => id !== user._id)
-          : [...post.upvotes, user._id],
+        upvotes: post.upvotes.includes(userInfo._id)
+          ? post.upvotes.filter((id) => id !== userInfo._id)
+          : [...post.upvotes, userInfo._id],
       };
       setPost(updatedPost);
     } catch (error) {
@@ -77,8 +76,8 @@ const PostDetails = () => {
 
   if (!post) return null;
 
-  const isUpvoted = user && post.upvotes.includes(user._id);
-  const isAuthor = user && user.username === post.postedBy;
+  const isUpvoted = userInfo && post.upvotes.includes(userInfo._id);
+  const isAuthor = userInfo && userInfo.username === post.postedBy;
 
   return (
     <div className="min-h-screen py-8 px-4 transition-colors duration-200">
