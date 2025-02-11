@@ -7,6 +7,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import { Toaster } from "react-hot-toast";
+import PostDetails from "./pages/PostDetails";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/post/:id" element={<PostDetails />} />
       </Routes>
 
       <Toaster position="bottom-right" />

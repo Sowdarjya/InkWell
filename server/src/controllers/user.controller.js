@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/utils.js";
+import { Post } from "../models/post.model.js";
 
 export const signup = async (req, res) => {
   const { fullname, email, username, password } = req.body;
@@ -151,6 +152,11 @@ export const updateProfile = async (req, res) => {
       },
       { new: true }
     ).select("-password");
+
+    await Post.updateMany(
+      { postedBy: user.username },
+      { $set: { profileImg: imageUrl } }
+    );
 
     return res.status(200).json(updatedUser);
   } catch (error) {
