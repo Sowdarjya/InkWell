@@ -9,7 +9,9 @@ const PostDetails = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("userInfo"))
+  );
 
   const getPostDetails = async () => {
     try {
@@ -27,7 +29,7 @@ const PostDetails = () => {
   const handleUpvote = async () => {
     try {
       if (!user) {
-        navigate("/login");
+        navigate("/signin");
         return;
       }
 
@@ -102,7 +104,7 @@ const PostDetails = () => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <img
-                  src={post.profileImg || "/api/placeholder/40/40"}
+                  src={post.profileImg || "https://placehold.co/100?text=User"}
                   alt={post.postedBy}
                   className="w-10 h-10 rounded-full object-cover bg-gray-200 dark:bg-gray-700"
                 />
