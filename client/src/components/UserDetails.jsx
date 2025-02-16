@@ -2,11 +2,18 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { FilePen, LogOut, Mail, UserRoundPen } from "lucide-react";
+import { FilePen, LogOut, Mail, Trash2Icon, UserRoundPen } from "lucide-react";
 import noUserImg from "../assets/noUserImg.jpeg";
 import toast from "react-hot-toast";
 import api from "../services/axios.instance";
-import { logOutSuccess, logOutStart, logOutFailure } from "../slices/userSlice";
+import {
+  logOutSuccess,
+  logOutStart,
+  logOutFailure,
+  deleteFailure,
+  deleteStart,
+  deleteSuccess,
+} from "../slices/userSlice";
 import Modal from "../components/Modal";
 
 const UserDetails = () => {
@@ -49,6 +56,20 @@ const UserDetails = () => {
       const errorMsg = error.message;
       toast.error(errorMsg);
       dispatch(logOutFailure(errorMsg));
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    dispatch(deleteStart());
+    try {
+      await api.delete("/users/delete");
+      dispatch(deleteSuccess());
+      navigate("/");
+      toast.success("Account deleted successfully");
+    } catch (error) {
+      errorMsg = error.message;
+      toast.error(errorMsg);
+      dispatch(deleteFailure(errorMsg));
     }
   };
 
@@ -142,6 +163,32 @@ const UserDetails = () => {
           </p>
         </>
       )}
+
+      {userInfo.username === username && (
+        <>
+          <div className="flex justify-center"></div>
+          <div className="flex justify-center">
+            <button
+              className="
+            mt-4
+            flex items-center justify-center gap-2
+            px-6 py-2.5 w-2/3
+            bg-red-500 hover:bg-red-600
+            dark:bg-red-600 dark:hover:bg-red-700
+            text-white font-medium
+            rounded-lg
+            transition-all duration-200
+            shadow-md hover:shadow-lg
+            hover:-translate-y-0.5"
+              onClick={handleDeleteAccount}
+            >
+              <span> {isLoading ? "loading" : "Delete"} </span>
+              <Trash2Icon className="w-5 h-5" />
+            </button>
+          </div>
+        </>
+      )}
+
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       )}
