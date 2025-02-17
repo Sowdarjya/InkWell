@@ -175,6 +175,8 @@ export const deleteProfile = async (req, res) => {
 
     res.clearCookie("jwt");
 
+    await Post.deleteMany({ postedBy: user.username });
+
     await User.findByIdAndDelete(user._id);
 
     return res.status(200).json({ message: "user deleted successfully" });

@@ -36,11 +36,6 @@ const UserDetails = () => {
   };
 
   useEffect(() => {
-    if (!username) {
-      setUserData(userInfo);
-      return;
-    }
-
     getUserDetails();
   }, []);
 
@@ -113,7 +108,7 @@ const UserDetails = () => {
         </div>
       </div>
 
-      {userInfo.username === username ? (
+      {userInfo?.username === username ? (
         <>
           <div className="flex justify-center">
             <button
@@ -164,7 +159,7 @@ const UserDetails = () => {
         </>
       )}
 
-      {userInfo.username === username && (
+      {userInfo?.username === username && (
         <>
           <div className="flex justify-center"></div>
           <div className="flex justify-center">
