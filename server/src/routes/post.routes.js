@@ -5,6 +5,7 @@ import {
   deletePost,
   getPost,
   getPosts,
+  getPostsByUser,
   updatePost,
   upvotePost,
 } from "../controllers/post.controller.js";
@@ -13,6 +14,7 @@ const router = Router();
 
 router.get("/get-posts", getPosts);
 router.get("/get-post/:id", getPost);
+router.get("/get-user-posts/:username", getPostsByUser);
 router.post("/create", verifyToken, createPost);
 router.put("/upvote-post/:id", verifyToken, upvotePost);
 router.put("/update-post/:id", verifyToken, updatePost);

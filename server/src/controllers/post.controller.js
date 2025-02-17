@@ -1,4 +1,5 @@
 import { Post } from "../models/post.model.js";
+import { User } from "../models/user.model.js";
 
 export const createPost = async (req, res) => {
   try {
@@ -85,6 +86,30 @@ export const getPosts = async (req, res) => {
     return res.status(200).json({ ...posts });
   } catch (error) {
     console.error(error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getPostsByUser = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const posts = await Post.find({ postedBy: user.username });
+
+    if (!posts) {
+      return res.status(400).json({ message: "No posts not found" });
+    }
+
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.error(error.message);
+
     return res.status(500).json({ message: "Internal server error" });
   }
 };
