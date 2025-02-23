@@ -7,8 +7,8 @@ const Post = ({ post }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="rounded-lg border border-gray-300 dark:border-gray-700 shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-transform transform hover:scale-[1.02] duration-200">
-      <div className="relative w-full aspect-[16/9] bg-gray-200 dark:bg-gray-700">
+    <div className="flex flex-col h-[460px] rounded-lg border border-gray-300 dark:border-gray-700 shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-transform transform hover:scale-[1.02] duration-200">
+      <div className="w-full h-48 bg-gray-200 dark:bg-gray-700">
         <img
           src={post.coverImg || defaultImage}
           alt={post.title}
@@ -17,16 +17,16 @@ const Post = ({ post }) => {
         />
       </div>
 
-      <div className="p-4">
+      <div className="flex flex-col flex-grow p-4">
         <div className="flex items-center space-x-3 mb-3">
-          <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
             <img
               src={post.profileImg || "https://placehold.co/100?text=User"}
               alt={post.postedBy}
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200">
+          <span className="text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200 truncate">
             <Link to={`/profile/${post.postedBy}`}>{post.postedBy}</Link>
           </span>
         </div>
@@ -35,7 +35,7 @@ const Post = ({ post }) => {
           {post.title}
         </h2>
 
-        <div className="flex justify-between items-center mb-4 text-sm">
+        <div className="flex justify-between items-center mt-auto mb-4 text-sm">
           <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300">
             {post.category}
           </span>
@@ -46,7 +46,7 @@ const Post = ({ post }) => {
 
         <button
           onClick={() => navigate(`/post/${post._id}`)}
-          className="w-full mt-2 flex items-center justify-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-transform transform hover:scale-105 dark:bg-blue-500 dark:hover:bg-blue-600"
+          className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-transform transform hover:scale-105 dark:bg-blue-500 dark:hover:bg-blue-600"
         >
           <span>Read More</span>
           <ArrowRight size={16} />

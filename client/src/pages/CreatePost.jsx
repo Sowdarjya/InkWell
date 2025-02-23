@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Image, Upload, X } from "lucide-react";
+import api from "../services/axios.instance.js";
+import toast from "react-hot-toast";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -49,7 +51,6 @@ const CreatePost = () => {
     reader.readAsDataURL(file);
   };
 
-  // Remove selected image
   const removeImage = () => {
     setPreviewImage("");
     setFormData({
@@ -58,11 +59,9 @@ const CreatePost = () => {
     });
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!formData.title || !formData.description || !formData.category) {
       setError("Title, description and category fields are mandatory");
       return;
@@ -76,29 +75,22 @@ const CreatePost = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const { data } = await api.post("/posts/create", formData);
 
-      const data = await res.json();
+      console.log(data);
 
-      if (!res.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
+      toast.success("Post created");
 
-      navigate(`/post/${data._id}`);
+      navigate("/");
     } catch (error) {
-      setError(error.message);
+      const errorMsg = error.message;
+      toast.error(errorMsg);
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
   };
 
-  // If user is not logged in, redirect to signin page
   if (!userInfo) {
     navigate("/signin");
     return null;
