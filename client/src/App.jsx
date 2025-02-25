@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import { Toaster } from "react-hot-toast";
 import PostDetails from "./pages/PostDetails";
 import CreatePost from "./pages/CreatePost";
+import UpdatePost from "./pages/UpdatePost";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/profile/:username" element={<Profile />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/post/:id" element={<PostDetails />} />
+        <Route path="/update-post/:id" element={<UpdatePost />} />
       </Routes>
 
       <Toaster position="bottom-right" />
