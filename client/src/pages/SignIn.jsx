@@ -36,8 +36,8 @@ const SignIn = () => {
       dispatch(signInFailure("All fields are mandatory"));
       return false;
     } else if (password.length < 6) {
-      toast.error("Password must contain atleast 6 characters");
-      dispatch(signInFailure("Password must contain atleast 6 characters"));
+      toast.error("Password must contain at least 6 characters");
+      dispatch(signInFailure("Password must contain at least 6 characters"));
       return false;
     } else {
       return true;
@@ -75,8 +75,8 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen mx-auto w-full flex justify-center items-center">
-      <form className="bg-[#FFE4F2] dark:bg-[#1E1E32] w-[40%] p-8 rounded-lg drop-shadow-2xl dark:drop-shadow-[0_35px_35px_rgba(85,100,146,0.25)]">
+    <div className="min-h-screen flex justify-center items-center p-4">
+      <form className="bg-[#FFE4F2] dark:bg-[#1E1E32] w-full max-w-md p-8 rounded-lg drop-shadow-2xl">
         <div className="flex items-center justify-center gap-3 text-4xl font-semibold text-[#333333] dark:text-[#E0E0E0]">
           <LogIn size={45} /> Login
         </div>
@@ -91,7 +91,7 @@ const SignIn = () => {
             value={email}
             onChange={handleChange}
             placeholder="Email"
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
         <div className="my-4">
@@ -102,7 +102,7 @@ const SignIn = () => {
             value={username}
             onChange={handleChange}
             placeholder="Username"
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
         <div className="my-4">
@@ -113,34 +113,30 @@ const SignIn = () => {
             value={password}
             onChange={handleChange}
             placeholder="Password"
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
-
         <p className="text-[#333333] dark:text-[#E0E0E0]">
           Show password
           <input
             type="checkbox"
             value={showPassword}
-            onChange={() => {
-              setShowPassword(!showPassword);
-            }}
+            onChange={() => setShowPassword(!showPassword)}
             className="mx-2"
           />
         </p>
-
         <div className="flex justify-center my-3">
           <button
             type="submit"
-            className="dark:bg-slate-500 bg-gray-400 p-2 rounded-md text-[#333333] dark:text-[#E0E0E0] w-4/5"
+            className="bg-gray-400 p-2 rounded-md w-full"
             onClick={handleSubmit}
           >
-            {isLoading ? "loading" : "Login"}
+            {isLoading ? "Loading..." : "Login"}
           </button>
         </div>
-        <p className="text-center text-[#333333] dark:text-[#E0E0E0]">
-          Don't have an account ?{" "}
-          <Link to="/signup" className="text-blue-400 hover:underline">
+        <p className="text-center">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-400">
             Register
           </Link>
         </p>

@@ -1,12 +1,10 @@
-import { ContactRound, Star } from "lucide-react";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { ContactRound } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../services/axios.instance";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../slices/userSlice";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -40,12 +38,12 @@ const SignUp = () => {
       dispatch(signInFailure("All fields are mandatory"));
       return false;
     } else if (password !== confirmPassword) {
-      toast.error("Passwords must be same");
-      dispatch(signInFailure("Passwords must be same"));
+      toast.error("Passwords must be the same");
+      dispatch(signInFailure("Passwords must be the same"));
       return false;
     } else if (password.length < 6) {
-      toast.error("Password must contain atleast 6 characters");
-      dispatch(signInFailure("Password must contain atleast 6 characters"));
+      toast.error("Password must contain at least 6 characters");
+      dispatch(signInFailure("Password must contain at least 6 characters"));
       return false;
     } else {
       return true;
@@ -67,7 +65,6 @@ const SignUp = () => {
 
       sessionStorage.setItem("userInfo", JSON.stringify(data));
       toast.success("Account created successfully");
-
       setFormData({
         fullname: "",
         email: "",
@@ -75,20 +72,19 @@ const SignUp = () => {
         password: "",
         confirmPassword: "",
       });
-
       dispatch(signInSuccess(data));
       navigate("/signin");
     } catch (error) {
       const errorMsg =
-        error.response?.data?.message || "error creating account";
+        error.response?.data?.message || "Error creating account";
       toast.error(errorMsg);
       dispatch(signInFailure(errorMsg));
     }
   };
 
   return (
-    <div className="min-h-screen mx-auto w-full flex justify-center items-center">
-      <form className="bg-[#FFE4F2] dark:bg-[#1E1E32] w-[40%] p-8 rounded-lg drop-shadow-2xl dark:drop-shadow-[0_35px_35px_rgba(85,100,146,0.25)]">
+    <div className="min-h-screen flex justify-center items-center p-4">
+      <form className="bg-[#FFE4F2] dark:bg-[#1E1E32] w-full max-w-md p-8 rounded-lg drop-shadow-2xl">
         <div className="flex items-center justify-center gap-3 text-4xl font-semibold text-[#333333] dark:text-[#E0E0E0]">
           <ContactRound size={45} /> Register
         </div>
@@ -96,87 +92,78 @@ const SignUp = () => {
           <p className="text-center text-xl text-red-600 mt-2">{isError}</p>
         )}
         <div className="my-4">
-          <p className="text-[#333333] dark:text-[#E0E0E0]">Full name</p>
+          <p>Full name</p>
           <input
             type="text"
-            placeholder="Full name"
             name="fullname"
             value={fullname}
             onChange={handleChange}
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="w-full p-2 rounded-md"
           />
         </div>
         <div className="my-4">
-          <p className="text-[#333333] dark:text-[#E0E0E0]">Email</p>
+          <p>Email</p>
           <input
-            type="text"
-            placeholder="Email"
+            type="email"
             name="email"
             value={email}
             onChange={handleChange}
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="w-full p-2 rounded-md"
           />
         </div>
         <div className="my-4">
-          <p className="text-[#333333] dark:text-[#E0E0E0]">Username</p>
+          <p>Username</p>
           <input
             type="text"
-            placeholder="Username"
             name="username"
             value={username}
             onChange={handleChange}
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="w-full p-2 rounded-md"
           />
         </div>
         <div className="my-4">
-          <p className="text-[#333333] dark:text-[#E0E0E0]">Password</p>
+          <p>Password</p>
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
             name="password"
             value={password}
             onChange={handleChange}
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="w-full p-2 rounded-md"
           />
         </div>
         <div className="my-4">
-          <p className="text-[#333333] dark:text-[#E0E0E0]">Confirm Password</p>
+          <p>Confirm Password</p>
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Confirm Password"
             name="confirmPassword"
             value={confirmPassword}
             onChange={handleChange}
-            className="border-none outline-none p-2 w-full rounded-md bg-[#FFFFFF] dark:bg-[#32324E] text-[#333333] dark:text-[#E0E0E0]"
+            className="w-full p-2 rounded-md"
           />
         </div>
-
-        <p className="text-[#333333] dark:text-[#E0E0E0]">
+        <p>
           Show password
           <input
             type="checkbox"
             value={showPassword}
-            onChange={() => {
-              setShowPassword(!showPassword);
-            }}
+            onChange={() => setShowPassword(!showPassword)}
             className="mx-2"
           />
         </p>
-
         <div className="flex justify-center my-3">
           <button
             type="submit"
-            className="dark:bg-slate-500 bg-gray-400 p-2 rounded-md text-[#333333] dark:text-[#E0E0E0] w-4/5"
+            className="bg-gray-400 p-2 rounded-md w-full"
             onClick={handleSubmit}
           >
-            {isLoading ? "Loading" : "Create account"}
+            {isLoading ? "Loading..." : "Create account"}
           </button>
         </div>
-        <p className="text-center text-[#333333] dark:text-[#E0E0E0]">
-          Already have an account ?{" "}
-          <Link to="/signin" className="text-blue-400 hover:underline">
+        <p className="text-center">
+          Already have an account?{" "}
+          <Link to="/signin" className="text-blue-400">
             Login
-          </Link>{" "}
+          </Link>
         </p>
       </form>
     </div>
