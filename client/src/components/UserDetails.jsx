@@ -68,7 +68,7 @@ const UserDetails = () => {
   };
 
   return (
-    <div className="w-full md:w-1/3 min-h-screen p-4 md:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+    <div className="w-full md:w-1/3 min-h-[80%] p-4 md:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <div className="relative flex justify-center">
         <div
           className="w-40 h-40 rounded-full 
@@ -166,15 +166,15 @@ const UserDetails = () => {
             <button
               className="
             mt-4
-            flex items-center justify-center gap-2
-            px-6 py-2.5 w-2/3
-            bg-red-500 hover:bg-red-600
-            dark:bg-red-600 dark:hover:bg-red-700
-            text-white font-medium
-            rounded-lg
-            transition-all duration-200
-            shadow-md hover:shadow-lg
-            hover:-translate-y-0.5"
+      flex items-center justify-center gap-2
+      px-4 md:px-6 py-2.5 w-full md:w-2/3
+      bg-red-500 hover:bg-red-600
+      dark:bg-red-600 dark:hover:bg-red-700
+      text-white font-medium
+      rounded-lg
+      transition-all duration-200
+      shadow-md hover:shadow-lg
+      hover:-translate-y-0.5"
               onClick={handleDeleteAccount}
             >
               <span> {isLoading ? "loading" : "Delete"} </span>
