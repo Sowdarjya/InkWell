@@ -46,7 +46,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm) return;
+    if (!validateForm()) return;
 
     dispatch(signInStart());
     try {
@@ -58,13 +58,12 @@ const SignIn = () => {
 
       dispatch(signInSuccess(data));
       toast.success("Logged in successfully");
-      sessionStorage.setItem("userInfo", JSON.stringify(data));
 
-      setFormData({
-        email: "",
-        username: "",
-        password: "",
-      });
+      // Store user info & token in sessionStorage
+      sessionStorage.setItem("userInfo", JSON.stringify(data));
+      sessionStorage.setItem("token", data.token); // Store JWT Token
+
+      setFormData({ email: "", username: "", password: "" });
 
       navigate("/");
     } catch (error) {

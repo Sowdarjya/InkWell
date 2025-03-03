@@ -75,18 +75,19 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = generateToken(user._id, res);
+    // Generate and return the token
+    const token = generateToken(user._id);
 
-    return res.status(201).json({
+    return res.status(200).json({
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
       username: user.username,
       profileImg: user.profileImg,
-      token,
+      token, // Send token in response
     });
   } catch (error) {
-    console.log("Error logging in user", error.message);
+    console.error("Error logging in user:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
