@@ -12,7 +12,13 @@ const port = process.env.PORT || 8000;
 
 const app = express();
 
-app.use(cors({ origin: "https://ink-well-tau.vercel.app", credentials: true }));
+app.use(
+  cors({
+    origin: "https://ink-well-tau.vercel.app",
+    credentials: true,
+    methods: "GET, POST, PUT, DELETE",
+  })
+);
 app.use(express.urlencoded({ limit: "999mb" }));
 app.use(express.json({ limit: "999mb" }));
 app.use(cookieParser());
