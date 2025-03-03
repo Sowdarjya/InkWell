@@ -167,6 +167,14 @@ const PostDetails = () => {
                 )}
               </div>
             </div>
+
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+              {post.title}
+            </h1>
+
+            <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+              {post.description}
+            </p>
           </div>
         </div>
       </div>

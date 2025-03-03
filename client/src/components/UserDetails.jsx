@@ -27,7 +27,6 @@ const UserDetails = () => {
   const getUserDetails = async () => {
     try {
       const response = await api.get(`/users/get-user/${username}`);
-      console.log(response);
       setUserData(response.data);
     } catch (error) {
       console.error(error.message);

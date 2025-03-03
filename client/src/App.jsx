@@ -26,7 +26,7 @@ const App = () => {
         <Route path="/update-post/:id" element={<UpdatePost />} />
       </Routes>
 
-      <Toaster position="bottom-right" />
+      <Toaster position="top-right" />
 
       <Footer />
     </div>

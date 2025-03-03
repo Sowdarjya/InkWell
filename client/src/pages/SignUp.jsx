@@ -92,60 +92,65 @@ const SignUp = () => {
           <p className="text-center text-xl text-red-600 mt-2">{isError}</p>
         )}
         <div className="my-4">
-          <p>Full name</p>
+          <p className="text-[#333333] dark:text-[#E0E0E0]">Full name</p>
           <input
             type="text"
             name="fullname"
             value={fullname}
+            placeholder="full name"
             onChange={handleChange}
-            className="w-full p-2 rounded-md"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
         <div className="my-4">
-          <p>Email</p>
+          <p className="text-[#333333] dark:text-[#E0E0E0]">Email</p>
           <input
             type="email"
             name="email"
             value={email}
+            placeholder="email"
             onChange={handleChange}
-            className="w-full p-2 rounded-md"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
         <div className="my-4">
-          <p>Username</p>
+          <p className="text-[#333333] dark:text-[#E0E0E0]">Username</p>
           <input
             type="text"
             name="username"
             value={username}
+            placeholder="username"
             onChange={handleChange}
-            className="w-full p-2 rounded-md"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
         <div className="my-4">
-          <p>Password</p>
+          <p className="text-[#333333] dark:text-[#E0E0E0]">Password</p>
           <input
             type={showPassword ? "text" : "password"}
             name="password"
             value={password}
+            placeholder="password"
             onChange={handleChange}
-            className="w-full p-2 rounded-md"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
         <div className="my-4">
-          <p>Confirm Password</p>
+          <p className="text-[#333333] dark:text-[#E0E0E0]">Confirm Password</p>
           <input
             type={showPassword ? "text" : "password"}
             name="confirmPassword"
             value={confirmPassword}
+            placeholder="confirm password"
             onChange={handleChange}
-            className="w-full p-2 rounded-md"
+            className="border-none outline-none p-2 w-full rounded-md"
           />
         </div>
-        <p>
+        <p className="text-[#333333] dark:text-[#E0E0E0]">
           Show password
           <input
             type="checkbox"
-            value={showPassword}
+            checked={showPassword}
             onChange={() => setShowPassword(!showPassword)}
             className="mx-2"
           />
