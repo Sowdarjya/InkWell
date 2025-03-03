@@ -12,7 +12,9 @@ const port = process.env.PORT || 8000;
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({ origin: "https://inkwell-m4ly.onrender.com", credentials: true })
+);
 app.use(express.urlencoded({ limit: "999mb" }));
 app.use(express.json({ limit: "999mb" }));
 app.use(cookieParser());
