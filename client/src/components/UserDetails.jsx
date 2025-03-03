@@ -61,9 +61,8 @@ const UserDetails = () => {
       navigate("/");
       toast.success("Account deleted successfully");
     } catch (error) {
-      errorMsg = error.message;
-      toast.error(errorMsg);
-      dispatch(deleteFailure(errorMsg));
+      toast.error(error.message);
+      dispatch(deleteFailure(error.message));
     }
   };
 
