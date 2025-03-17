@@ -72,7 +72,6 @@ const SignUp = () => {
         password: "",
         confirmPassword: "",
       });
-      dispatch(signInSuccess(data));
       navigate("/signin");
     } catch (error) {
       const errorMsg =
